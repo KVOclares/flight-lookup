@@ -1,0 +1,121 @@
+{
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "count": 2,
+    "total": 2
+  },
+  "data": [
+    {
+      "flight_date": "2026-02-21",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Dallas/Fort Worth International",
+        "timezone": "America/Chicago",
+        "iata": "DFW",
+        "icao": "KDFW",
+        "terminal": "A",
+        "gate": "A34",
+        "delay": null,
+        "scheduled": "2026-02-21T11:18:00+00:00",
+        "estimated": "2026-02-21T11:18:00+00:00",
+        "actual": "2026-02-21T11:51:00+00:00",
+        "estimated_runway": "2026-02-21T11:51:00+00:00",
+        "actual_runway": "2026-02-21T11:51:00+00:00"
+      },
+      "arrival": {
+        "airport": "Kahului",
+        "timezone": "Pacific/Honolulu",
+        "iata": "OGG",
+        "icao": "PHOG",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "scheduled": "2026-02-21T15:45:00+00:00",
+        "delay": 33,
+        "estimated": "2026-02-21T15:29:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "American Airlines",
+        "iata": "AA",
+        "icao": "AAL"
+      },
+      "flight": {
+        "number": "123",
+        "iata": "AA123",
+        "icao": "AAL123",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": "N835AN",
+        "iata": "B789",
+        "icao": "B789",
+        "icao24": "AB6AFA"
+      },
+      "live": {
+        "updated": "2026-02-21T22:26:25+00:00",
+        "latitude": 30.4094,
+        "longitude": -134.41,
+        "altitude": 11574.8,
+        "direction": 250,
+        "speed_horizontal": 772.284,
+        "speed_vertical": 0,
+        "is_ground": false
+      }
+    },
+    {
+      "flight_date": "2026-02-20",
+      "flight_status": "landed",
+      "departure": {
+        "airport": "Dallas/Fort Worth International",
+        "timezone": "America/Chicago",
+        "iata": "DFW",
+        "icao": "KDFW",
+        "terminal": "A",
+        "gate": "A23X",
+        "delay": null,
+        "scheduled": "2026-02-20T11:18:00+00:00",
+        "estimated": "2026-02-20T11:18:00+00:00",
+        "actual": "2026-02-20T11:39:00+00:00",
+        "estimated_runway": "2026-02-20T11:39:00+00:00",
+        "actual_runway": "2026-02-20T11:39:00+00:00"
+      },
+      "arrival": {
+        "airport": "Kahului",
+        "timezone": "Pacific/Honolulu",
+        "iata": "OGG",
+        "icao": "PHOG",
+        "terminal": null,
+        "gate": "35",
+        "baggage": null,
+        "scheduled": "2026-02-20T15:45:00+00:00",
+        "delay": null,
+        "estimated": "2026-02-20T15:27:00+00:00",
+        "actual": "2026-02-20T15:29:00+00:00",
+        "estimated_runway": "2026-02-20T15:29:00+00:00",
+        "actual_runway": "2026-02-20T15:29:00+00:00"
+      },
+      "airline": {
+        "name": "American Airlines",
+        "iata": "AA",
+        "icao": "AAL"
+      },
+      "flight": {
+        "number": "123",
+        "iata": "AA123",
+        "icao": "AAL123",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": null,
+        "iata": null,
+        "icao": null,
+        "icao24": "AB4E94"
+      },
+      "live": null
+    }
+  ]
+}

@@ -1,4 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flight Lookup
+
+A personal project built with [Next.js](https://nextjs.org) for searching and tracking flight status in real-time. This application uses the [Aviationstack API](https://aviationstack.com/) to fetch live flight data.
+
+## Prerequisites
+
+To run this project locally on your machine, you'll need an API key from Aviationstack. You must provide this on your behalf to fetch real data.
+
+1. Obtain a free API key from [Aviationstack](https://aviationstack.com/)
+2. Create a `.env.local` file in the root of the project
+3. Add your API key to the `.env.local` file:
+
+```env
+AVIATIONSTACK_API_KEY=your_api_key_here
+```
+
+This project was bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 

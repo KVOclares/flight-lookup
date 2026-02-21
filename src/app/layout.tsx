@@ -5,7 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Aero - Premium Flight Lookup',
+  title: 'Flight Tracker',
   description: 'Search for any flight and get real-time information instantly.',
 };
 

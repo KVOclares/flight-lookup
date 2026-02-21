@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils';
 // Regex: 2-3 letters followed by 1-4 digits
 const FLIGHT_REGEX = /^[A-Z]{2,3}\d{1,4}$/i;
 
+const SAMPLE_FLIGHTS = ['AA123', 'UA456', 'JL001', 'DL789', 'EK202', 'WN101', 'BA112'];
+
 interface FlightSearchProps {
     onSearch: (query: string) => void;
     isLoading: boolean;
@@ -61,9 +63,16 @@ export function FlightSearch({ onSearch, isLoading }: FlightSearchProps) {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
 
+    const handleSampleClick = (flightNo: string) => {
+        setInputVal(flightNo);
+        setError('');
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        onSearch(flightNo);
+    };
+
     return (
         <div className="w-full max-w-2xl mx-auto mb-10">
-            <form onSubmit={handleSubmit} className="relative group">
+            <form onSubmit={handleSubmit} className="relative group mb-6">
                 <div
                     className={cn(
                         "flex items-center bg-white dark:bg-zinc-900 border-[3px] rounded-2xl p-2 transition-all duration-300 shadow-sm",
@@ -103,6 +112,26 @@ export function FlightSearch({ onSearch, isLoading }: FlightSearchProps) {
                     </div>
                 )}
             </form>
+
+            {/* Try a Sample Search Panel */}
+            <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-xl p-4 border border-zinc-100 dark:border-zinc-800/80 mt-8">
+                <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-3 ml-1 flex items-center gap-2">
+                    <span>API unavailable? Try these sample flights:</span>
+                </p>
+                <div className="flex flex-wrap gap-2">
+                    {SAMPLE_FLIGHTS.map((f) => (
+                        <button
+                            key={f}
+                            type="button"
+                            onClick={() => handleSampleClick(f)}
+                            disabled={isLoading}
+                            className="px-3 py-1.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-zinc-700 dark:text-zinc-300 text-sm font-bold rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {f}
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
