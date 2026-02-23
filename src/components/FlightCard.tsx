@@ -9,7 +9,6 @@ interface FlightCardProps {
 }
 
 export function FlightCard({ flight }: FlightCardProps) {
-    // Safe parsing helper due to date-fns-tz version exports
     const parseToUtc = (localStr: string, tz: string) => {
         try {
             if (typeof fromZonedTime === 'function') {
@@ -17,7 +16,6 @@ export function FlightCard({ flight }: FlightCardProps) {
             }
             return toDate(localStr, { timeZone: tz });
         } catch {
-            // Fallback native
             return new Date(localStr);
         }
     };
@@ -29,7 +27,6 @@ export function FlightCard({ flight }: FlightCardProps) {
     const durHours = Math.floor(durationMin / 60);
     const durMins = durationMin % 60;
 
-    // Format explicitly in airport timezone
     const airportDepTime = new Intl.DateTimeFormat('en-US', {
         timeZone: flight.departure.timezone,
         hour: 'numeric',
@@ -44,7 +41,6 @@ export function FlightCard({ flight }: FlightCardProps) {
         hour12: true,
     }).format(arrDateUtc);
 
-    // User browser timezone
     const userDepTime = new Intl.DateTimeFormat('en-US', {
         hour: 'numeric',
         minute: '2-digit',
@@ -61,76 +57,79 @@ export function FlightCard({ flight }: FlightCardProps) {
     const isArrDifferentTz = airportArrTime !== userArrTime;
 
     return (
-        <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 rounded-3xl p-6 mb-4 overflow-hidden relative group">
-            {/* Flight status indicator at the top right */}
-            <div className="absolute top-6 right-6">
+        <div className="group glass glass-hover transition-all duration-300 rounded-2xl p-6 mb-4 overflow-hidden relative cursor-pointer">
+            {/* Subtle hover glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-sky-500/0 to-sky-500/0 group-hover:from-sky-500/[0.03] group-hover:to-transparent transition-all duration-500 rounded-2xl pointer-events-none" />
+
+            {/* Status badge */}
+            <div className="absolute top-6 right-6 z-10">
                 <span
                     className={cn(
                         'px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase',
-                        flight.status === 'On Time' && 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-                        flight.status === 'Delayed' && 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-                        flight.status === 'Landed' && 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-                        flight.status === 'Cancelled' && 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
+                        flight.status === 'On Time' && 'bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20',
+                        flight.status === 'Delayed' && 'bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20',
+                        flight.status === 'Landed' && 'bg-sky-500/10 text-sky-400 ring-1 ring-sky-500/20',
+                        flight.status === 'Cancelled' && 'bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20'
                     )}
                 >
                     {flight.status}
                 </span>
             </div>
 
-            <div className="flex items-center gap-3 mb-6">
-                <div className="h-10 w-10 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl flex items-center justify-center text-indigo-500">
+            <div className="flex items-center gap-3 mb-6 relative z-10">
+                <div className="h-10 w-10 bg-sky-500/10 rounded-xl flex items-center justify-center text-sky-400 ring-1 ring-sky-500/20">
                     <Plane className="h-5 w-5" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-lg dark:text-zinc-100">{flight.airline}</h3>
-                    <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">Flight {flight.flightNumber}</p>
+                    <h3 className="font-bold text-lg text-white">{flight.airline}</h3>
+                    <p className="text-slate-500 text-sm font-medium">Flight {flight.flightNumber}</p>
                 </div>
             </div>
 
-            <div className="flex items-start justify-between relative">
+            <div className="flex items-start justify-between relative z-10">
                 {/* Departure */}
                 <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1 text-zinc-400">
+                    <div className="flex items-center gap-2 mb-1 text-slate-500">
                         <PlaneTakeoff className="h-4 w-4" />
                         <span className="text-xs font-medium uppercase tracking-wider">Departure</span>
                     </div>
-                    <div className="text-3xl font-black text-zinc-800 dark:text-zinc-100 mb-1">{airportDepTime}</div>
+                    <div className="text-3xl font-extrabold text-white mb-1">{airportDepTime}</div>
                     {isDepDifferentTz && (
-                        <div className="text-xs text-indigo-500 font-medium mb-1">
-                            {userDepTime} <span className="text-zinc-400">(Your Time)</span>
+                        <div className="text-xs text-sky-400 font-medium mb-1">
+                            {userDepTime} <span className="text-slate-500">(Your Time)</span>
                         </div>
                     )}
-                    <div className="font-bold text-lg text-zinc-700 dark:text-zinc-300">{flight.departure.airportCode}</div>
-                    <div className="text-sm text-zinc-500">{flight.departure.city}</div>
+                    <div className="font-bold text-lg text-sky-400">{flight.departure.airportCode}</div>
+                    <div className="text-sm text-slate-500">{flight.departure.city}</div>
                 </div>
 
                 {/* Duration / Route line */}
                 <div className="flex-1 flex flex-col items-center justify-center pt-8 px-4">
-                    <div className="text-xs font-semibold text-zinc-400 flex items-center gap-1 mb-2">
+                    <div className="text-xs font-semibold text-slate-500 flex items-center gap-1 mb-2">
                         <Clock className="w-3 h-3" />
                         {durHours}h {durMins}m
                     </div>
                     <div className="w-full flex items-center">
-                        <div className="h-[2px] w-full bg-zinc-200 dark:bg-zinc-800 rounded-l-full" />
-                        <Plane className="w-5 h-5 text-indigo-400 mx-2 flex-shrink-0" />
-                        <div className="h-[2px] w-full bg-zinc-200 dark:bg-zinc-800 rounded-r-full" />
+                        <div className="h-[2px] w-full bg-gradient-to-r from-sky-500/40 to-sky-400/60 rounded-l-full" />
+                        <Plane className="w-5 h-5 text-sky-400 mx-2 flex-shrink-0" />
+                        <div className="h-[2px] w-full bg-gradient-to-r from-sky-400/60 to-sky-500/40 rounded-r-full" />
                     </div>
                 </div>
 
                 {/* Arrival */}
                 <div className="flex-1 text-right">
-                    <div className="flex items-center justify-end gap-2 mb-1 text-zinc-400">
+                    <div className="flex items-center justify-end gap-2 mb-1 text-slate-500">
                         <span className="text-xs font-medium uppercase tracking-wider">Arrival</span>
                         <PlaneLanding className="h-4 w-4" />
                     </div>
-                    <div className="text-3xl font-black text-zinc-800 dark:text-zinc-100 mb-1">{airportArrTime}</div>
+                    <div className="text-3xl font-extrabold text-white mb-1">{airportArrTime}</div>
                     {isArrDifferentTz && (
-                        <div className="text-xs text-indigo-500 font-medium mb-1 flex justify-end gap-1">
-                            <span className="text-zinc-400">(Your Time)</span> {userArrTime}
+                        <div className="text-xs text-sky-400 font-medium mb-1 flex justify-end gap-1">
+                            <span className="text-slate-500">(Your Time)</span> {userArrTime}
                         </div>
                     )}
-                    <div className="font-bold text-lg text-zinc-700 dark:text-zinc-300">{flight.arrival.airportCode}</div>
-                    <div className="text-sm text-zinc-500">{flight.arrival.city}</div>
+                    <div className="font-bold text-lg text-sky-400">{flight.arrival.airportCode}</div>
+                    <div className="text-sm text-slate-500">{flight.arrival.city}</div>
                 </div>
             </div>
         </div>

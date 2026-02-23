@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
+import { ShaderBackground } from '@/components/ShaderBackground';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-dm-sans',
+});
 
 export const metadata: Metadata = {
-  title: 'Flight Tracker',
-  description: 'Search for any flight and get real-time information instantly.',
+  title: 'Aero — Flight Tracker',
+  description: 'Track your flight instantly. Enter your flight number to get real-time status and timezone conversions.',
 };
 
 export default function RootLayout({
@@ -15,13 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} min-h-screen antialiased bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-50 selection:bg-indigo-500/30`}>
-        {/* Background gradient decorative element */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 dark:bg-indigo-500/10 blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/20 dark:bg-blue-500/10 blur-[120px]" />
-        </div>
+    <html lang="en" className="dark">
+      <body className={`${dmSans.className} min-h-screen antialiased bg-[#050A14] text-slate-200 selection:bg-sky-400/30`}>
+        <ShaderBackground />
         {children}
       </body>
     </html>
