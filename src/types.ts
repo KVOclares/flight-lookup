@@ -4,22 +4,32 @@ export interface Flight {
   id: string;
   airline: string;
   flightNumber: string;
-  
+
   departure: {
     city: string;
     airportCode: string;
     timeLocal: string; // ISO 8601 string representing local time
     timezone: string; // IANA timezone string e.g., 'America/Los_Angeles'
+    terminal?: string | null;
+    gate?: string | null;
+    delay?: number | null; // minutes late
+    actual?: string | null; // actual departure ISO string
   };
-  
+
   arrival: {
     city: string;
     airportCode: string;
     timeLocal: string; // ISO 8601 string representing local time
     timezone: string; // IANA timezone string e.g., 'Asia/Tokyo'
+    terminal?: string | null;
+    gate?: string | null;
+    baggage?: string | null; // baggage claim belt
+    delay?: number | null;
+    actual?: string | null;
   };
-  
+
   status: FlightStatus;
+  aircraft?: string | null; // IATA aircraft type code e.g. 'B77W'
 }
 
 export interface ApiResponse<T> {

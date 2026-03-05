@@ -2,19 +2,15 @@
 
 export function ShaderBackground() {
     return (
-        <>
-            {/* Full-screen animated shader via iframe */}
-            <iframe
-                src="https://cdn.21st.dev/minhxthanh/animated-shader-background/default/bundle.1749003393329.html?theme=dark&dark=true"
-                className="fixed inset-0 w-full h-full border-none pointer-events-none -z-10"
-                style={{ colorScheme: 'normal' }}
-                aria-hidden="true"
-                tabIndex={-1}
-                title="Animated background"
-                loading="eager"
-            />
-            {/* Fallback dark bg visible before iframe loads */}
-            <div className="fixed inset-0 -z-20 bg-[#050A14]" />
-        </>
+        <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+            {/* Base */}
+            <div className="absolute inset-0 bg-[#050A14]" />
+            {/* Orb 1 — top-left sky blue */}
+            <div className="gradient-orb orb-1" />
+            {/* Orb 2 — bottom-right indigo */}
+            <div className="gradient-orb orb-2" />
+            {/* Orb 3 — center subtle */}
+            <div className="gradient-orb orb-3" />
+        </div>
     );
 }

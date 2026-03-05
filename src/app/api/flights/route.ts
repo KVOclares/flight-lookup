@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getFlights } from '@/lib/flights';
+import { getFlights, getFlightsByAirport } from '@/lib/flights';
 import { ApiResponse, Flight } from '@/types';
 
 // --- In-Memory Rate Limiter (For Single-Instance/Dev) ---
@@ -14,7 +14,6 @@ const MAX_REQUESTS = 10;
 
 export async function GET(request: NextRequest) {
     // 1. Rate Limiting Check
-    // Get IP (fallback to 'anonymous' if headers missing)
     const ip = request.headers.get('x-forwarded-for') || 'anonymous';
 
     const now = Date.now();
@@ -22,7 +21,6 @@ export async function GET(request: NextRequest) {
 
     if (rateData) {
         if (now < rateData.resetTime) {
-            // Still in the current window
             if (rateData.count >= MAX_REQUESTS) {
                 return NextResponse.json(
                     { error: 'Too many requests. Please try again later.' } as ApiResponse<Flight[]>,
@@ -31,26 +29,37 @@ export async function GET(request: NextRequest) {
             }
             rateLimitMap.set(ip, { ...rateData, count: rateData.count + 1 });
         } else {
-            // Window expired, reset
             rateLimitMap.set(ip, { count: 1, resetTime: now + WINDOW_MS });
         }
     } else {
-        // First request from this IP
         rateLimitMap.set(ip, { count: 1, resetTime: now + WINDOW_MS });
     }
 
     // 2. Process Request
     const searchParams = request.nextUrl.searchParams;
-    const flightNumber = searchParams.get('flightNumber');
-
-    if (!flightNumber) {
-        return NextResponse.json(
-            { error: 'Flight number is required' } as ApiResponse<Flight[]>,
-            { status: 400 }
-        );
-    }
+    const type = searchParams.get('type') ?? 'flight'; // 'flight' | 'departures' | 'arrivals'
 
     try {
+        if (type === 'departures' || type === 'arrivals') {
+            const code = searchParams.get('code');
+            if (!code) {
+                return NextResponse.json(
+                    { error: 'Airport code is required' } as ApiResponse<Flight[]>,
+                    { status: 400 }
+                );
+            }
+            const flights = await getFlightsByAirport(code, type);
+            return NextResponse.json({ data: flights } as ApiResponse<Flight[]>);
+        }
+
+        // Default: flight number search
+        const flightNumber = searchParams.get('flightNumber');
+        if (!flightNumber) {
+            return NextResponse.json(
+                { error: 'Flight number is required' } as ApiResponse<Flight[]>,
+                { status: 400 }
+            );
+        }
         const flights = await getFlights(flightNumber);
         return NextResponse.json({ data: flights } as ApiResponse<Flight[]>);
     } catch (error) {
